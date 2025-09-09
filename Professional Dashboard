@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Professional Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-button {
+            width: 100%;
+            padding: 15px 25px;
+            margin: 12px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(79, 172, 254, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.6);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            box-shadow: 0 8px 15px rgba(255, 171, 160, 0.4);
+            font-size: 1em;
+            padding: 12px 25px;
+            margin-top: 20px;
+            text-transform: none;
+        }
+
+        .employee-section .menu-button {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        }
+
+        .faculty-section .menu-button {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        .hidden { display: none; }
+
+        .crypto-container {
+            text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .encryption-panel {
+            background: linear-gradient(135deg, #ff7675 0%, #e84393 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .encryption-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .encrypt-btn, .decrypt-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .encrypt-btn {
+            background: #00b894;
+        }
+
+        .decrypt-btn {
+            background: #e17055;
+        }
+
+        .encrypt-btn:hover, .decrypt-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-area {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 100px;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .status-message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .security-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .high-security {
+            background: #00b894;
+            color: white;
+        }
+
+        .medium-security {
+            background: #fdcb6e;
+            color: #333;
+        }
+
+        .basic-security {
+            background: #e17055;
+            color: white;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            margin: 10px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .task-completed {
+            text-decoration: line-through;
+            color: #999;
+            background: #f8f9fa;
+        }
+
+        .mini-btn {
+            padding: 8px 15px;
+            margin: 0 3px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .complete-btn {
+            background: #00b894;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e17055;
+            color: white;
+        }
+
+        .mini-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .priority-high { border-left: 5px solid #e17055; }
+        .priority-urgent { border-left: 5px solid #d63031; }
+        .priority-medium { border-left: 5px solid #fdcb6e; }
+        .priority-low { border-left: 5px solid #00b894; }
+
+        .data-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .data-item:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .data-item.selected {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .data-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .data-meta {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .academic-theme {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .research-theme {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .professional-theme {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+
+        .modern-theme {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Menu -->
+        <div id="mainMenu">
+            <h1 class="title">🔒 Secure Professional Dashboard</h1>
+            <button class="menu-button" onclick="showEmployeeSection()">Employee Management</button>
+            <button class="menu-button" onclick="showFacultySection()">Faculty Coordination</button>
+        </div>
+
+        <!-- Employee Section Menu -->
+        <div id="employeeSection" class="employee-section hidden">
+            <h1 class="title">👥 Employee Management</h1>
+            <button class="menu-button" onclick="showEmployeeNotes()">📝 Employee Notes</button>
+            <button class="menu-button" onclick="showMeetingMinutes()">⏰ Meeting Minutes</button>
+            <button class="menu-button" onclick="showEmployeeMemos()">📋 Employee Memos</button>
+            <button class="menu-button" onclick="showEmployeeLetters()">📄 Official Letters</button>
+            <button class="menu-button" onclick="showViewEmployeeData()" style="background: linear-gradient(135deg, #00cec9 0%, #55a3ff 100%);">👁️ View Saved Data</button>
+            <button class="menu-button back-button" onclick="showMainMenu()">Back to Main</button>
+        </div>
+
+        <!-- Faculty Section Menu -->
+        <div id="facultySection" class="faculty-section hidden">
+            <h1 class="title">🎓 Faculty Coordination</h1>
+            <button class="menu-button" onclick="showFacultyDrafts()">📝 Draft Documents</button>
+            <button class="menu-button" onclick="showCustomizePages()">⚙️ Customize Pages</button>
+            <button class="menu-button" onclick="showToDoList()">✅ To-Do List</button>
+            <button class="menu-button" onclick="showStoreInfoWorks()">💼 Store Info About Works</button>
+            <button class="menu-button" onclick="showProjectIdeas()">💡 Project Ideas</button>
+            <button class="menu-button" onclick="showPatentIdeas()">🏆 Patent Ideas</button>
+            <button class="menu-button" onclick="showViewFacultyData()" style="background: linear-gradient(135deg, #00cec9 0%, #55a3ff 100%);">👁️ View Saved Data</button>
+            <button class="menu-button back-button" onclick="showMainMenu()">Back to Main</button>
+        </div>
+
+        <!-- Employee Notes -->
+        <div id="employeeNotes" class="employee-section hidden">
+            <h1 class="title">📝 Employee Notes <span class="security-indicator high-security">AES-256</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="notesEmployee">Employee Name:</label>
+                    <input type="text" id="notesEmployee" placeholder="Enter employee name">
+                </div>
+                <div class="form-group">
+                    <label for="notesDepartment">Department:</label>
+                    <select id="notesDepartment">
+                        <option value="hr">Human Resources</option>
+                        <option value="finance">Finance</option>
+                        <option value="it">IT Department</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="operations">Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notesContent">Notes Content:</label>
+                    <textarea id="notesContent" placeholder="Enter confidential employee notes..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Encryption Settings</h3>
+                    <div class="form-group">
+                        <label for="notesEncryptionKey">Encryption Key:</label>
+                        <input type="password" id="notesEncryptionKey" placeholder="Enter strong encryption key">
+                    </div>
+                    <div class="form-group">
+                        <label for="notesAlgorithm">Security Level:</label>
+                        <select id="notesAlgorithm">
+                            <option value="aes256">AES-256 (Highest Security)</option>
+                            <option value="aes128">AES-128 (High Security)</option>
+                            <option value="blowfish">Blowfish (Medium Security)</option>
+                            <option value="caesar">Caesar Cipher (Basic)</option>
+                        </select>
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptNotes()">🔒 Encrypt Notes</button>
+                        <button class="decrypt-btn" onclick="decryptNotes()">🔓 Decrypt Notes</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Encrypted Result:</label>
+                    <div id="notesResult" class="result-area">Encrypted notes will appear here...</div>
+                </div>
+                
+                <button class="menu-button" onclick="saveEmployeeNotes()">💾 Save Encrypted Notes</button>
+            </div>
+            <div id="notesStatus"></div>
+            <button class="menu-button back-button" onclick="showEmployeeSection()">Back to Employee</button>
+        </div>
+
+        <!-- Meeting Minutes -->
+        <div id="meetingMinutes" class="employee-section hidden">
+            <h1 class="title">⏰ Meeting Minutes <span class="security-indicator high-security">RSA-2048</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="meetingDate">Meeting Date:</label>
+                    <input type="datetime-local" id="meetingDate">
+                </div>
+                <div class="form-group">
+                    <label for="meetingTitle">Meeting Title:</label>
+                    <input type="text" id="meetingTitle" placeholder="Enter meeting title">
+                </div>
+                <div class="form-group">
+                    <label for="meetingAttendees">Attendees:</label>
+                    <textarea id="meetingAttendees" placeholder="List meeting attendees..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="minutesContent">Meeting Minutes:</label>
+                    <textarea id="minutesContent" placeholder="Enter detailed meeting minutes..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Meeting Security</h3>
+                    <div class="form-group">
+                        <label for="minutesKey">Security Key:</label>
+                        <input type="password" id="minutesKey" placeholder="Enter meeting security key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptMinutes()">🔒 Encrypt Minutes</button>
+                        <button class="decrypt-btn" onclick="decryptMinutes()">🔓 Decrypt Minutes</button>
+                    </div>
+                </div>
+                
+                <div id="minutesResult" class="result-area">Encrypted minutes will appear here...</div>
+                <button class="menu-button" onclick="saveMeetingMinutes()">💾 Save Secure Minutes</button>
+            </div>
+            <div id="minutesStatus"></div>
+            <button class="menu-button back-button" onclick="showEmployeeSection()">Back to Employee</button>
+        </div>
+
+        <!-- Employee Memos -->
+        <div id="employeeMemos" class="employee-section hidden">
+            <h1 class="title">📋 Employee Memos <span class="security-indicator medium-security">Triple-DES</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="memoSubject">Memo Subject:</label>
+                    <input type="text" id="memoSubject" placeholder="Enter memo subject">
+                </div>
+                <div class="form-group">
+                    <label for="memoRecipient">Recipient Department:</label>
+                    <select id="memoRecipient">
+                        <option value="all">All Departments</option>
+                        <option value="management">Management</option>
+                        <option value="hr">Human Resources</option>
+                        <option value="finance">Finance</option>
+                        <option value="it">IT Department</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="memoContent">Memo Content:</label>
+                    <textarea id="memoContent" placeholder="Enter memo content..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Memo Security</h3>
+                    <div class="form-group">
+                        <label for="memoKey">Encryption Key:</label>
+                        <input type="password" id="memoKey" placeholder="Enter encryption key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptMemo()">🔒 Encrypt Memo</button>
+                        <button class="decrypt-btn" onclick="decryptMemo()">🔓 Decrypt Memo</button>
+                    </div>
+                </div>
+                
+                <div id="memoResult" class="result-area">Encrypted memo will appear here...</div>
+                <button class="menu-button" onclick="saveMemo()">💾 Save Encrypted Memo</button>
+            </div>
+            <div id="memoStatus"></div>
+            <button class="menu-button back-button" onclick="showEmployeeSection()">Back to Employee</button>
+        </div>
+
+        <!-- Employee Letters -->
+        <div id="employeeLetters" class="employee-section hidden">
+            <h1 class="title">📄 Official Letters <span class="security-indicator high-security">AES-256</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="letterType">Letter Type:</label>
+                    <select id="letterType">
+                        <option value="appointment">Appointment Letter</option>
+                        <option value="promotion">Promotion Letter</option>
+                        <option value="warning">Warning Letter</option>
+                        <option value="termination">Termination Letter</option>
+                        <option value="recommendation">Recommendation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="letterRecipient">Recipient:</label>
+                    <input type="text" id="letterRecipient" placeholder="Enter recipient name">
+                </div>
+                <div class="form-group">
+                    <label for="letterContent">Letter Content:</label>
+                    <textarea id="letterContent" placeholder="Enter official letter content..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Letter Security</h3>
+                    <div class="form-group">
+                        <label for="letterKey">Security Key:</label>
+                        <input type="password" id="letterKey" placeholder="Enter security key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptLetter()">🔒 Encrypt Letter</button>
+                        <button class="decrypt-btn" onclick="decryptLetter()">🔓 Decrypt Letter</button>
+                    </div>
+                </div>
+                
+                <div id="letterResult" class="result-area">Encrypted letter will appear here...</div>
+                <button class="menu-button" onclick="saveLetter()">💾 Save Secure Letter</button>
+            </div>
+            <div id="letterStatus"></div>
+            <button class="menu-button back-button" onclick="showEmployeeSection()">Back to Employee</button>
+        </div>
+
+        <!-- View Employee Data -->
+        <div id="viewEmployeeData" class="employee-section hidden">
+            <h1 class="title">👁️ View Saved Employee Data</h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="dataType">Select Data Type:</label>
+                    <select id="dataType" onchange="displayEmployeeData()">
+                        <option value="notes">Employee Notes</option>
+                        <option value="minutes">Meeting Minutes</option>
+                        <option value="memos">Employee Memos</option>
+                        <option value="letters">Official Letters</option>
+                    </select>
+                </div>
+                
+                <div id="savedDataList" class="result-area" style="max-height: 400px;">
+                    <p>Select a data type to view saved records...</p>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Decrypt Selected Item</h3>
+                    <div class="form-group">
+                        <label for="viewDecryptKey">Decryption Key:</label>
+                        <input type="password" id="viewDecryptKey" placeholder="Enter decryption key">
+                    </div>
+                    <button class="decrypt-btn" onclick="decryptSelectedItem()" style="width: 100%;">🔓 Decrypt Selected</button>
+                </div>
+                
+                <div id="decryptedView" class="result-area">
+                    Decrypted content will appear here...
+                </div>
+            </div>
+            <div id="viewStatus"></div>
+            <button class="menu-button back-button" onclick="showEmployeeSection()">Back to Employee</button>
+        </div>
+
+        <!-- Faculty Drafts -->
+        <div id="facultyDrafts" class="faculty-section hidden">
+            <h1 class="title">📝 Draft Documents <span class="security-indicator high-security">ChaCha20</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="draftTitle">Draft Title:</label>
+                    <input type="text" id="draftTitle" placeholder="Enter draft title">
+                </div>
+                <div class="form-group">
+                    <label for="draftCategory">Document Category:</label>
+                    <select id="draftCategory">
+                        <option value="research">Research Paper</option>
+                        <option value="proposal">Project Proposal</option>
+                        <option value="report">Academic Report</option>
+                        <option value="presentation">Presentation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="draftContent">Draft Content:</label>
+                    <textarea id="draftContent" placeholder="Enter draft content..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Draft Security</h3>
+                    <div class="form-group">
+                        <label for="draftKey">Encryption Key:</label>
+                        <input type="password" id="draftKey" placeholder="Enter encryption key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptDraft()">🔒 Encrypt Draft</button>
+                        <button class="decrypt-btn" onclick="decryptDraft()">🔓 Decrypt Draft</button>
+                    </div>
+                </div>
+                
+                <div id="draftResult" class="result-area">Encrypted draft will appear here...</div>
+                <button class="menu-button" onclick="saveDraft()">💾 Save Secure Draft</button>
+            </div>
+            <div id="draftStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- To-Do List -->
+        <div id="toDoList" class="faculty-section hidden">
+            <h1 class="title">✅ To-Do List <span class="security-indicator medium-security">Encrypted</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="newTask">New Task:</label>
+                    <input type="text" id="newTask" placeholder="Enter new task">
+                </div>
+                <div class="form-group">
+                    <label for="taskPriority">Priority:</label>
+                    <select id="taskPriority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <button class="menu-button" onclick="addTask()" style="width: 200px; display: inline-block;">➕ Add Secure Task</button>
+                
+                <div id="taskList" class="result-area" style="max-height: 300px;">
+                    <p>No tasks added yet. Add your first secure task above!</p>
+                </div>
+                
+                <button class="menu-button" onclick="clearTasks()" style="background: linear-gradient(135deg, #e17055 0%, #d63031 100%);">🗑️ Clear All Tasks</button>
+            </div>
+            <div id="taskStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- Project Ideas -->
+        <div id="projectIdeas" class="faculty-section hidden">
+            <h1 class="title">💡 Project Ideas <span class="security-indicator high-security">RSA-4096</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="projectTitle">Project Title:</label>
+                    <input type="text" id="projectTitle" placeholder="Enter project title">
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Project Description:</label>
+                    <textarea id="projectDescription" placeholder="Enter project description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectBudget">Estimated Budget:</label>
+                    <input type="text" id="projectBudget" placeholder="Enter budget estimate">
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Project Security</h3>
+                    <div class="form-group">
+                        <label for="projectKey">Security Key:</label>
+                        <input type="password" id="projectKey" placeholder="Enter security key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptProject()">🔒 Encrypt Project</button>
+                        <button class="decrypt-btn" onclick="decryptProject()">🔓 Decrypt Project</button>
+                    </div>
+                </div>
+                
+                <div id="projectResult" class="result-area">Encrypted project will appear here...</div>
+                <button class="menu-button" onclick="saveProject()">💾 Save Secure Project</button>
+            </div>
+            <div id="projectStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- Patent Ideas -->
+        <div id="patentIdeas" class="faculty-section hidden">
+            <h1 class="title">🏆 Patent Ideas <span class="security-indicator high-security">Military-Grade</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="patentTitle">Patent Title:</label>
+                    <input type="text" id="patentTitle" placeholder="Enter patent title">
+                </div>
+                <div class="form-group">
+                    <label for="patentDescription">Patent Description:</label>
+                    <textarea id="patentDescription" placeholder="Enter patent description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="patentInventors">Inventors:</label>
+                    <input type="text" id="patentInventors" placeholder="List inventors">
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Patent Security</h3>
+                    <div class="form-group">
+                        <label for="patentKey">Security Key:</label>
+                        <input type="password" id="patentKey" placeholder="Enter security key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptPatent()">🔒 Encrypt Patent</button>
+                        <button class="decrypt-btn" onclick="decryptPatent()">🔓 Decrypt Patent</button>
+                    </div>
+                </div>
+                
+                <div id="patentResult" class="result-area">Encrypted patent will appear here...</div>
+                <button class="menu-button" onclick="savePatent()">💾 Save Secure Patent</button>
+            </div>
+            <div id="patentStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- Store Info About Works -->
+        <div id="storeInfoWorks" class="faculty-section hidden">
+            <h1 class="title">💼 Store Info About Works <span class="security-indicator high-security">AES-256</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="workTitle">Work Title:</label>
+                    <input type="text" id="workTitle" placeholder="Enter work title">
+                </div>
+                <div class="form-group">
+                    <label for="workType">Work Type:</label>
+                    <select id="workType">
+                        <option value="research">Research Work</option>
+                        <option value="project">Project</option>
+                        <option value="publication">Publication</option>
+                        <option value="thesis">Thesis</option>
+                        <option value="collaboration">Collaboration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="workDescription">Work Description:</label>
+                    <textarea id="workDescription" placeholder="Enter detailed work description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="workStatus">Status:</label>
+                    <select id="workStatus">
+                        <option value="planning">Planning</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="review">Under Review</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Work Info Security</h3>
+                    <div class="form-group">
+                        <label for="workKey">Security Key:</label>
+                        <input type="password" id="workKey" placeholder="Enter security key">
+                    </div>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptWorkInfo()">🔒 Encrypt Work Info</button>
+                        <button class="decrypt-btn" onclick="decryptWorkInfo()">🔓 Decrypt Work Info</button>
+                    </div>
+                </div>
+                
+                <div id="workResult" class="result-area">Encrypted work info will appear here...</div>
+                <button class="menu-button" onclick="saveWorkInfo()">💾 Save Secure Work Info</button>
+            </div>
+            <div id="workStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- Customize Pages -->
+        <div id="customizePages" class="faculty-section hidden">
+            <h1 class="title">⚙️ Customize Pages <span class="security-indicator medium-security">Encrypted</span></h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="pageTheme">Page Theme:</label>
+                    <select id="pageTheme" onchange="applyTheme()">
+                        <option value="default">Default Blue</option>
+                        <option value="academic">Academic Blue</option>
+                        <option value="research">Research Green</option>
+                        <option value="professional">Professional Gray</option>
+                        <option value="modern">Modern Purple</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fontSize">Font Size:</label>
+                    <select id="fontSize" onchange="applyFontSize()">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="customSettings">Custom CSS Settings:</label>
+                    <textarea id="customSettings" placeholder="Enter your custom CSS settings..."></textarea>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Settings Security</h3>
+                    <div class="encryption-controls">
+                        <button class="encrypt-btn" onclick="encryptSettings()">🔒 Encrypt Settings</button>
+                        <button class="decrypt-btn" onclick="decryptSettings()">🔓 Decrypt Settings</button>
+                    </div>
+                </div>
+                
+                <div id="settingsResult" class="result-area">Encrypted settings will appear here...</div>
+                <button class="menu-button" onclick="saveCustomization()">💾 Apply Secure Settings</button>
+            </div>
+            <div id="settingsStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+
+        <!-- View Faculty Data -->
+        <div id="viewFacultyData" class="faculty-section hidden">
+            <h1 class="title">👁️ View Saved Faculty Data</h1>
+            <div class="crypto-container">
+                <div class="form-group">
+                    <label for="facultyDataType">Select Data Type:</label>
+                    <select id="facultyDataType" onchange="displayFacultyData()">
+                        <option value="drafts">Draft Documents</option>
+                        <option value="projects">Project Ideas</option>
+                        <option value="patents">Patent Ideas</option>
+                        <option value="workInfo">Work Information</option>
+                    </select>
+                </div>
+                
+                <div id="savedFacultyDataList" class="result-area" style="max-height: 400px;">
+                    <p>Select a data type to view saved records...</p>
+                </div>
+                
+                <div class="encryption-panel">
+                    <h3>🔐 Decrypt Selected Item</h3>
+                    <div class="form-group">
+                        <label for="facultyDecryptKey">Decryption Key:</label>
+                        <input type="password" id="facultyDecryptKey" placeholder="Enter decryption key">
+                    </div>
+                    <button class="decrypt-btn" onclick="decryptSelectedFacultyItem()" style="width: 100%;">🔓 Decrypt Selected</button>
+                </div>
+                
+                <div id="decryptedFacultyView" class="result-area">
+                    Decrypted content will appear here...
+                </div>
+            </div>
+            <div id="facultyViewStatus"></div>
+            <button class="menu-button back-button" onclick="showFacultySection()">Back to Faculty</button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for data storage
+        let tasks = [];
+        let selectedDataItem = null;
+        let selectedFacultyDataItem = null;
+        let encryptedData = {
+            notes: [],
+            minutes: [],
+            memos: [],
+            letters: [],
+            drafts: [],
+            projects: [],
+            patents: [],
+            workInfo: []
+        };
+
+        // Simple encryption function (Base64 + Caesar cipher for demo)
+        function simpleEncrypt(text, key) {
+            if (!text || !key) return '';
+            const shift = key.length % 26;
+            let encrypted = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                if (char.match(/[a-zA-Z]/)) {
+                    const code = char.charCodeAt(0);
+                    const isUpperCase = code >= 65 && code <= 90;
+                    const base = isUpperCase ? 65 : 97;
+                    encrypted += String.fromCharCode(((code - base + shift) % 26) + base);
+                } else {
+                    encrypted += char;
+                }
+            }
+            return btoa(encrypted + '|' + key);
+        }
+
+        // Simple decryption function
+        function simpleDecrypt(encryptedText, key) {
+            try {
+                const decoded = atob(encryptedText);
+                const parts = decoded.split('|');
+                if (parts.length !== 2 || parts[1] !== key) {
+                    throw new Error('Invalid key');
+                }
+                
+                const text = parts[0];
+                const shift = key.length % 26;
+                let decrypted = '';
+                
+                for (let i = 0; i < text.length; i++) {
+                    let char = text[i];
+                    if (char.match(/[a-zA-Z]/)) {
+                        const code = char.charCodeAt(0);
+                        const isUpperCase = code >= 65 && code <= 90;
+                        const base = isUpperCase ? 65 : 97;
+                        decrypted += String.fromCharCode(((code - base - shift + 26) % 26) + base);
+                    } else {
+                        decrypted += char;
+                    }
+                }
+                return decrypted;
+            } catch (error) {
+                throw new Error('Decryption failed: Invalid key or corrupted data');
+            }
+        }
+
+        // Navigation functions
+        function showSection(sectionId) {
+            document.querySelectorAll('.container > div').forEach(div => {
+                div.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function showMainMenu() { showSection('mainMenu'); }
+        function showEmployeeSection() { showSection('employeeSection'); }
+        function showFacultySection() { showSection('facultySection'); }
+        function showEmployeeNotes() { showSection('employeeNotes'); }
+        function showMeetingMinutes() { showSection('meetingMinutes'); }
+        function showEmployeeMemos() { showSection('employeeMemos'); }
+        function showEmployeeLetters() { showSection('employeeLetters'); }
+        function showViewEmployeeData() { showSection('viewEmployeeData'); displayEmployeeData(); }
+        function showFacultyDrafts() { showSection('facultyDrafts'); }
+        function showCustomizePages() { showSection('customizePages'); }
+        function showToDoList() { showSection('toDoList'); displayTasks(); }
+        function showStoreInfoWorks() { showSection('storeInfoWorks'); }
+        function showProjectIdeas() { showSection('projectIdeas'); }
+        function showPatentIdeas() { showSection('patentIdeas'); }
+        function showViewFacultyData() { showSection('viewFacultyData'); displayFacultyData(); }
+
+        // Status message functions
+        function showStatus(elementId, message, isSuccess = true) {
+            const statusElement = document.getElementById(elementId);
+            statusElement.innerHTML = `<div class="status-message ${isSuccess ? 'success' : 'error'}">${message}</div>`;
+            setTimeout(() => {
+                statusElement.innerHTML = '';
+            }, 3000);
+        }
+
+        // Employee Notes functions
+        function encryptNotes() {
+            const content = document.getElementById('notesContent').value;
+            const key = document.getElementById('notesEncryptionKey').value;
+            
+            if (!content || !key) {
+                showStatus('notesStatus', 'Please enter both content and encryption key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(content, key);
+                document.getElementById('notesResult').textContent = encrypted;
+                showStatus('notesStatus', 'Notes encrypted successfully!');
+            } catch (error) {
+                showStatus('notesStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptNotes() {
+            const encryptedContent = document.getElementById('notesResult').textContent;
+            const key = document.getElementById('notesEncryptionKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted notes will appear here...') {
+                showStatus('notesStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('notesContent').value = decrypted;
+                showStatus('notesStatus', 'Notes decrypted successfully!');
+            } catch (error) {
+                showStatus('notesStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveEmployeeNotes() {
+            const employee = document.getElementById('notesEmployee').value;
+            const department = document.getElementById('notesDepartment').value;
+            const content = document.getElementById('notesContent').value;
+            const encryptedContent = document.getElementById('notesResult').textContent;
+            
+            if (!employee || !content) {
+                showStatus('notesStatus', 'Please fill in employee name and content!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted notes will appear here...') {
+                showStatus('notesStatus', 'Please encrypt the notes first!', false);
+                return;
+            }
+            
+            const noteData = {
+                id: Date.now(),
+                employee: employee,
+                department: department,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.notes.push(noteData);
+            showStatus('notesStatus', `Employee notes for ${employee} saved successfully!`);
+            
+            // Clear form
+            document.getElementById('notesEmployee').value = '';
+            document.getElementById('notesContent').value = '';
+            document.getElementById('notesResult').textContent = 'Encrypted notes will appear here...';
+            document.getElementById('notesEncryptionKey').value = '';
+        }
+
+        // Meeting Minutes functions
+        function encryptMinutes() {
+            const content = document.getElementById('minutesContent').value;
+            const key = document.getElementById('minutesKey').value;
+            
+            if (!content || !key) {
+                showStatus('minutesStatus', 'Please enter both content and security key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(content, key);
+                document.getElementById('minutesResult').textContent = encrypted;
+                showStatus('minutesStatus', 'Meeting minutes encrypted successfully!');
+            } catch (error) {
+                showStatus('minutesStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptMinutes() {
+            const encryptedContent = document.getElementById('minutesResult').textContent;
+            const key = document.getElementById('minutesKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted minutes will appear here...') {
+                showStatus('minutesStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('minutesContent').value = decrypted;
+                showStatus('minutesStatus', 'Meeting minutes decrypted successfully!');
+            } catch (error) {
+                showStatus('minutesStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveMeetingMinutes() {
+            const date = document.getElementById('meetingDate').value;
+            const title = document.getElementById('meetingTitle').value;
+            const attendees = document.getElementById('meetingAttendees').value;
+            const content = document.getElementById('minutesContent').value;
+            const encryptedContent = document.getElementById('minutesResult').textContent;
+            
+            if (!title || !content) {
+                showStatus('minutesStatus', 'Please fill in meeting title and content!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted minutes will appear here...') {
+                showStatus('minutesStatus', 'Please encrypt the minutes first!', false);
+                return;
+            }
+            
+            const minuteData = {
+                id: Date.now(),
+                date: date,
+                title: title,
+                attendees: attendees,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.minutes.push(minuteData);
+            showStatus('minutesStatus', `Meeting minutes "${title}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('meetingDate').value = '';
+            document.getElementById('meetingTitle').value = '';
+            document.getElementById('meetingAttendees').value = '';
+            document.getElementById('minutesContent').value = '';
+            document.getElementById('minutesResult').textContent = 'Encrypted minutes will appear here...';
+            document.getElementById('minutesKey').value = '';
+        }
+
+        // Employee Memos functions
+        function encryptMemo() {
+            const content = document.getElementById('memoContent').value;
+            const key = document.getElementById('memoKey').value;
+            
+            if (!content || !key) {
+                showStatus('memoStatus', 'Please enter both content and encryption key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(content, key);
+                document.getElementById('memoResult').textContent = encrypted;
+                showStatus('memoStatus', 'Memo encrypted successfully!');
+            } catch (error) {
+                showStatus('memoStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptMemo() {
+            const encryptedContent = document.getElementById('memoResult').textContent;
+            const key = document.getElementById('memoKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted memo will appear here...') {
+                showStatus('memoStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('memoContent').value = decrypted;
+                showStatus('memoStatus', 'Memo decrypted successfully!');
+            } catch (error) {
+                showStatus('memoStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveMemo() {
+            const subject = document.getElementById('memoSubject').value;
+            const recipient = document.getElementById('memoRecipient').value;
+            const content = document.getElementById('memoContent').value;
+            const encryptedContent = document.getElementById('memoResult').textContent;
+            
+            if (!subject || !content) {
+                showStatus('memoStatus', 'Please fill in subject and content!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted memo will appear here...') {
+                showStatus('memoStatus', 'Please encrypt the memo first!', false);
+                return;
+            }
+            
+            const memoData = {
+                id: Date.now(),
+                subject: subject,
+                recipient: recipient,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.memos.push(memoData);
+            showStatus('memoStatus', `Memo "${subject}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('memoSubject').value = '';
+            document.getElementById('memoContent').value = '';
+            document.getElementById('memoResult').textContent = 'Encrypted memo will appear here...';
+            document.getElementById('memoKey').value = '';
+        }
+
+        // Employee Letters functions
+        function encryptLetter() {
+            const content = document.getElementById('letterContent').value;
+            const key = document.getElementById('letterKey').value;
+            
+            if (!content || !key) {
+                showStatus('letterStatus', 'Please enter both content and security key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(content, key);
+                document.getElementById('letterResult').textContent = encrypted;
+                showStatus('letterStatus', 'Letter encrypted successfully!');
+            } catch (error) {
+                showStatus('letterStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptLetter() {
+            const encryptedContent = document.getElementById('letterResult').textContent;
+            const key = document.getElementById('letterKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted letter will appear here...') {
+                showStatus('letterStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('letterContent').value = decrypted;
+                showStatus('letterStatus', 'Letter decrypted successfully!');
+            } catch (error) {
+                showStatus('letterStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveLetter() {
+            const type = document.getElementById('letterType').value;
+            const recipient = document.getElementById('letterRecipient').value;
+            const content = document.getElementById('letterContent').value;
+            const encryptedContent = document.getElementById('letterResult').textContent;
+            
+            if (!recipient || !content) {
+                showStatus('letterStatus', 'Please fill in recipient and content!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted letter will appear here...') {
+                showStatus('letterStatus', 'Please encrypt the letter first!', false);
+                return;
+            }
+            
+            const letterData = {
+                id: Date.now(),
+                type: type,
+                recipient: recipient,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.letters.push(letterData);
+            showStatus('letterStatus', `${type} for ${recipient} saved successfully!`);
+            
+            // Clear form
+            document.getElementById('letterRecipient').value = '';
+            document.getElementById('letterContent').value = '';
+            document.getElementById('letterResult').textContent = 'Encrypted letter will appear here...';
+            document.getElementById('letterKey').value = '';
+        }
+
+        // Faculty Draft functions
+        function encryptDraft() {
+            const content = document.getElementById('draftContent').value;
+            const key = document.getElementById('draftKey').value;
+            
+            if (!content || !key) {
+                showStatus('draftStatus', 'Please enter both content and encryption key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(content, key);
+                document.getElementById('draftResult').textContent = encrypted;
+                showStatus('draftStatus', 'Draft encrypted successfully!');
+            } catch (error) {
+                showStatus('draftStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptDraft() {
+            const encryptedContent = document.getElementById('draftResult').textContent;
+            const key = document.getElementById('draftKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted draft will appear here...') {
+                showStatus('draftStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('draftContent').value = decrypted;
+                showStatus('draftStatus', 'Draft decrypted successfully!');
+            } catch (error) {
+                showStatus('draftStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveDraft() {
+            const title = document.getElementById('draftTitle').value;
+            const category = document.getElementById('draftCategory').value;
+            const content = document.getElementById('draftContent').value;
+            const encryptedContent = document.getElementById('draftResult').textContent;
+            
+            if (!title || !content) {
+                showStatus('draftStatus', 'Please fill in title and content!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted draft will appear here...') {
+                showStatus('draftStatus', 'Please encrypt the draft first!', false);
+                return;
+            }
+            
+            const draftData = {
+                id: Date.now(),
+                title: title,
+                category: category,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.drafts.push(draftData);
+            showStatus('draftStatus', `Draft "${title}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('draftTitle').value = '';
+            document.getElementById('draftContent').value = '';
+            document.getElementById('draftResult').textContent = 'Encrypted draft will appear here...';
+            document.getElementById('draftKey').value = '';
+        }
+
+        // Project Ideas functions
+        function encryptProject() {
+            const description = document.getElementById('projectDescription').value;
+            const key = document.getElementById('projectKey').value;
+            
+            if (!description || !key) {
+                showStatus('projectStatus', 'Please enter both description and security key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(description, key);
+                document.getElementById('projectResult').textContent = encrypted;
+                showStatus('projectStatus', 'Project encrypted successfully!');
+            } catch (error) {
+                showStatus('projectStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptProject() {
+            const encryptedContent = document.getElementById('projectResult').textContent;
+            const key = document.getElementById('projectKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted project will appear here...') {
+                showStatus('projectStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('projectDescription').value = decrypted;
+                showStatus('projectStatus', 'Project decrypted successfully!');
+            } catch (error) {
+                showStatus('projectStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveProject() {
+            const title = document.getElementById('projectTitle').value;
+            const description = document.getElementById('projectDescription').value;
+            const budget = document.getElementById('projectBudget').value;
+            const encryptedContent = document.getElementById('projectResult').textContent;
+            
+            if (!title || !description) {
+                showStatus('projectStatus', 'Please fill in title and description!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted project will appear here...') {
+                showStatus('projectStatus', 'Please encrypt the project first!', false);
+                return;
+            }
+            
+            const projectData = {
+                id: Date.now(),
+                title: title,
+                budget: budget,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.projects.push(projectData);
+            showStatus('projectStatus', `Project "${title}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('projectTitle').value = '';
+            document.getElementById('projectDescription').value = '';
+            document.getElementById('projectBudget').value = '';
+            document.getElementById('projectResult').textContent = 'Encrypted project will appear here...';
+            document.getElementById('projectKey').value = '';
+        }
+
+        // Patent Ideas functions
+        function encryptPatent() {
+            const description = document.getElementById('patentDescription').value;
+            const key = document.getElementById('patentKey').value;
+            
+            if (!description || !key) {
+                showStatus('patentStatus', 'Please enter both description and security key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(description, key);
+                document.getElementById('patentResult').textContent = encrypted;
+                showStatus('patentStatus', 'Patent encrypted successfully!');
+            } catch (error) {
+                showStatus('patentStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptPatent() {
+            const encryptedContent = document.getElementById('patentResult').textContent;
+            const key = document.getElementById('patentKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted patent will appear here...') {
+                showStatus('patentStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('patentDescription').value = decrypted;
+                showStatus('patentStatus', 'Patent decrypted successfully!');
+            } catch (error) {
+                showStatus('patentStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function savePatent() {
+            const title = document.getElementById('patentTitle').value;
+            const description = document.getElementById('patentDescription').value;
+            const inventors = document.getElementById('patentInventors').value;
+            const encryptedContent = document.getElementById('patentResult').textContent;
+            
+            if (!title || !description) {
+                showStatus('patentStatus', 'Please fill in title and description!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted patent will appear here...') {
+                showStatus('patentStatus', 'Please encrypt the patent first!', false);
+                return;
+            }
+            
+            const patentData = {
+                id: Date.now(),
+                title: title,
+                inventors: inventors,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.patents.push(patentData);
+            showStatus('patentStatus', `Patent "${title}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('patentTitle').value = '';
+            document.getElementById('patentDescription').value = '';
+            document.getElementById('patentInventors').value = '';
+            document.getElementById('patentResult').textContent = 'Encrypted patent will appear here...';
+            document.getElementById('patentKey').value = '';
+        }
+
+        // Work Info functions
+        function encryptWorkInfo() {
+            const description = document.getElementById('workDescription').value;
+            const key = document.getElementById('workKey').value;
+            
+            if (!description || !key) {
+                showStatus('workStatus', 'Please enter both description and security key!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(description, key);
+                document.getElementById('workResult').textContent = encrypted;
+                showStatus('workStatus', 'Work info encrypted successfully!');
+            } catch (error) {
+                showStatus('workStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptWorkInfo() {
+            const encryptedContent = document.getElementById('workResult').textContent;
+            const key = document.getElementById('workKey').value;
+            
+            if (!encryptedContent || !key || encryptedContent === 'Encrypted work info will appear here...') {
+                showStatus('workStatus', 'No encrypted content or key provided!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, key);
+                document.getElementById('workDescription').value = decrypted;
+                showStatus('workStatus', 'Work info decrypted successfully!');
+            } catch (error) {
+                showStatus('workStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        function saveWorkInfo() {
+            const title = document.getElementById('workTitle').value;
+            const type = document.getElementById('workType').value;
+            const description = document.getElementById('workDescription').value;
+            const status = document.getElementById('workStatus').value;
+            const encryptedContent = document.getElementById('workResult').textContent;
+            
+            if (!title || !description) {
+                showStatus('workStatus', 'Please fill in title and description!', false);
+                return;
+            }
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted work info will appear here...') {
+                showStatus('workStatus', 'Please encrypt the work info first!', false);
+                return;
+            }
+            
+            const workData = {
+                id: Date.now(),
+                title: title,
+                type: type,
+                status: status,
+                timestamp: new Date().toLocaleString(),
+                encryptedContent: encryptedContent
+            };
+            
+            encryptedData.workInfo.push(workData);
+            showStatus('workStatus', `Work info "${title}" saved successfully!`);
+            
+            // Clear form
+            document.getElementById('workTitle').value = '';
+            document.getElementById('workDescription').value = '';
+            document.getElementById('workResult').textContent = 'Encrypted work info will appear here...';
+            document.getElementById('workKey').value = '';
+        }
+
+        // To-Do List functions
+        function addTask() {
+            const taskText = document.getElementById('newTask').value;
+            const priority = document.getElementById('taskPriority').value;
+            
+            if (!taskText) {
+                showStatus('taskStatus', 'Please enter a task!', false);
+                return;
+            }
+            
+            const task = {
+                id: Date.now(),
+                text: taskText,
+                priority: priority,
+                completed: false,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            tasks.push(task);
+            document.getElementById('newTask').value = '';
+            displayTasks();
+            showStatus('taskStatus', 'Task added successfully!');
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<p>No tasks added yet. Add your first secure task above!</p>';
+                return;
+            }
+            
+            taskList.innerHTML = tasks.map(task => `
+                <div class="task-item ${task.completed ? 'task-completed' : ''} priority-${task.priority}">
+                    <div>
+                        <strong>${task.text}</strong><br>
+                        <small>Priority: ${task.priority.toUpperCase()} | Added: ${task.timestamp}</small>
+                    </div>
+                    <div>
+                        ${!task.completed ? `<button class="mini-btn complete-btn" onclick="completeTask(${task.id})">✓ Complete</button>` : ''}
+                        <button class="mini-btn delete-btn" onclick="deleteTask(${task.id})">✗ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function completeTask(taskId) {
+            tasks = tasks.map(task => 
+                task.id === taskId ? {...task, completed: true} : task
+            );
+            displayTasks();
+            showStatus('taskStatus', 'Task marked as completed!');
+        }
+
+        function deleteTask(taskId) {
+            tasks = tasks.filter(task => task.id !== taskId);
+            displayTasks();
+            showStatus('taskStatus', 'Task deleted successfully!');
+        }
+
+        function clearTasks() {
+            if (tasks.length === 0) {
+                showStatus('taskStatus', 'No tasks to clear!', false);
+                return;
+            }
+            
+            if (confirm('Are you sure you want to clear all tasks?')) {
+                tasks = [];
+                displayTasks();
+                showStatus('taskStatus', 'All tasks cleared!');
+            }
+        }
+
+        // Theme and customization functions
+        function applyTheme() {
+            const theme = document.getElementById('pageTheme').value;
+            const body = document.body;
+            
+            // Remove existing theme classes
+            body.classList.remove('academic-theme', 'research-theme', 'professional-theme', 'modern-theme');
+            
+            // Apply new theme
+            switch(theme) {
+                case 'academic':
+                    body.classList.add('academic-theme');
+                    break;
+                case 'research':
+                    body.classList.add('research-theme');
+                    break;
+                case 'professional':
+                    body.classList.add('professional-theme');
+                    break;
+                case 'modern':
+                    body.classList.add('modern-theme');
+                    break;
+                default:
+                    // Default theme, no additional class needed
+                    break;
+            }
+            
+            showStatus('settingsStatus', `Theme changed to ${theme}!`);
+        }
+
+        function applyFontSize() {
+            const fontSize = document.getElementById('fontSize').value;
+            const container = document.querySelector('.container');
+            
+            container.classList.remove('font-small', 'font-medium', 'font-large');
+            
+            switch(fontSize) {
+                case 'small':
+                    container.style.fontSize = '14px';
+                    break;
+                case 'large':
+                    container.style.fontSize = '18px';
+                    break;
+                default:
+                    container.style.fontSize = '16px';
+                    break;
+            }
+            
+            showStatus('settingsStatus', `Font size changed to ${fontSize}!`);
+        }
+
+        function encryptSettings() {
+            const settings = document.getElementById('customSettings').value;
+            
+            if (!settings) {
+                showStatus('settingsStatus', 'Please enter custom settings to encrypt!', false);
+                return;
+            }
+            
+            try {
+                const encrypted = simpleEncrypt(settings, 'settings-key');
+                document.getElementById('settingsResult').textContent = encrypted;
+                showStatus('settingsStatus', 'Settings encrypted successfully!');
+            } catch (error) {
+                showStatus('settingsStatus', 'Encryption failed!', false);
+            }
+        }
+
+        function decryptSettings() {
+            const encryptedContent = document.getElementById('settingsResult').textContent;
+            
+            if (!encryptedContent || encryptedContent === 'Encrypted settings will appear here...') {
+                showStatus('settingsStatus', 'No encrypted settings found!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(encryptedContent, 'settings-key');
+                document.getElementById('customSettings').value = decrypted;
+                showStatus('settingsStatus', 'Settings decrypted successfully!');
+            } catch (error) {
+                showStatus('settingsStatus', 'Decryption failed!', false);
+            }
+        }
+
+        function saveCustomization() {
+            const theme = document.getElementById('pageTheme').value;
+            const fontSize = document.getElementById('fontSize').value;
+            const customSettings = document.getElementById('customSettings').value;
+            
+            // Apply current settings
+            applyTheme();
+            applyFontSize();
+            
+            showStatus('settingsStatus', 'Customization settings applied and saved!');
+        }
+
+        // View Employee Data functions
+        function displayEmployeeData() {
+            const dataType = document.getElementById('dataType').value;
+            const dataList = document.getElementById('savedDataList');
+            selectedDataItem = null;
+            
+            const data = encryptedData[dataType] || [];
+            
+            if (data.length === 0) {
+                dataList.innerHTML = '<p>No saved records found for this data type.</p>';
+                return;
+            }
+            
+            dataList.innerHTML = data.map(item => {
+                let title = '';
+                let subtitle = '';
+                
+                switch(dataType) {
+                    case 'notes':
+                        title = `Employee: ${item.employee}`;
+                        subtitle = `Department: ${item.department}`;
+                        break;
+                    case 'minutes':
+                        title = `Meeting: ${item.title}`;
+                        subtitle = `Date: ${item.date || 'Not specified'}`;
+                        break;
+                    case 'memos':
+                        title = `Subject: ${item.subject}`;
+                        subtitle = `To: ${item.recipient}`;
+                        break;
+                    case 'letters':
+                        title = `${item.type}`;
+                        subtitle = `To: ${item.recipient}`;
+                        break;
+                }
+                
+                return `
+                    <div class="data-item" onclick="selectDataItem(${item.id}, '${dataType}')">
+                        <div class="data-title">${title}</div>
+                        <div class="data-meta">${subtitle} | Saved: ${item.timestamp}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectDataItem(itemId, dataType) {
+            // Remove previous selection
+            document.querySelectorAll('.data-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selection to clicked item
+            event.target.closest('.data-item').classList.add('selected');
+            
+            selectedDataItem = {
+                id: itemId,
+                type: dataType
+            };
+            
+            showStatus('viewStatus', 'Item selected. Enter decryption key to view content.');
+        }
+
+        function decryptSelectedItem() {
+            if (!selectedDataItem) {
+                showStatus('viewStatus', 'Please select an item first!', false);
+                return;
+            }
+            
+            const key = document.getElementById('viewDecryptKey').value;
+            if (!key) {
+                showStatus('viewStatus', 'Please enter the decryption key!', false);
+                return;
+            }
+            
+            const data = encryptedData[selectedDataItem.type];
+            const item = data.find(item => item.id === selectedDataItem.id);
+            
+            if (!item) {
+                showStatus('viewStatus', 'Selected item not found!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(item.encryptedContent, key);
+                document.getElementById('decryptedView').innerHTML = `
+                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h4>Decrypted Content:</h4>
+                        <pre style="white-space: pre-wrap; margin-top: 10px;">${decrypted}</pre>
+                    </div>
+                `;
+                showStatus('viewStatus', 'Content decrypted successfully!');
+            } catch (error) {
+                showStatus('viewStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        // View Faculty Data functions
+        function displayFacultyData() {
+            const dataType = document.getElementById('facultyDataType').value;
+            const dataList = document.getElementById('savedFacultyDataList');
+            selectedFacultyDataItem = null;
+            
+            const data = encryptedData[dataType] || [];
+            
+            if (data.length === 0) {
+                dataList.innerHTML = '<p>No saved records found for this data type.</p>';
+                return;
+            }
+            
+            dataList.innerHTML = data.map(item => {
+                let title = '';
+                let subtitle = '';
+                
+                switch(dataType) {
+                    case 'drafts':
+                        title = `Draft: ${item.title}`;
+                        subtitle = `Category: ${item.category}`;
+                        break;
+                    case 'projects':
+                        title = `Project: ${item.title}`;
+                        subtitle = `Budget: ${item.budget || 'Not specified'}`;
+                        break;
+                    case 'patents':
+                        title = `Patent: ${item.title}`;
+                        subtitle = `Inventors: ${item.inventors || 'Not specified'}`;
+                        break;
+                    case 'workInfo':
+                        title = `Work: ${item.title}`;
+                        subtitle = `Type: ${item.type} | Status: ${item.status}`;
+                        break;
+                }
+                
+                return `
+                    <div class="data-item" onclick="selectFacultyDataItem(${item.id}, '${dataType}')">
+                        <div class="data-title">${title}</div>
+                        <div class="data-meta">${subtitle} | Saved: ${item.timestamp}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectFacultyDataItem(itemId, dataType) {
+            // Remove previous selection
+            document.querySelectorAll('.data-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Add selection to clicked item
+            event.target.closest('.data-item').classList.add('selected');
+            
+            selectedFacultyDataItem = {
+                id: itemId,
+                type: dataType
+            };
+            
+            showStatus('facultyViewStatus', 'Item selected. Enter decryption key to view content.');
+        }
+
+        function decryptSelectedFacultyItem() {
+            if (!selectedFacultyDataItem) {
+                showStatus('facultyViewStatus', 'Please select an item first!', false);
+                return;
+            }
+            
+            const key = document.getElementById('facultyDecryptKey').value;
+            if (!key) {
+                showStatus('facultyViewStatus', 'Please enter the decryption key!', false);
+                return;
+            }
+            
+            const data = encryptedData[selectedFacultyDataItem.type];
+            const item = data.find(item => item.id === selectedFacultyDataItem.id);
+            
+            if (!item) {
+                showStatus('facultyViewStatus', 'Selected item not found!', false);
+                return;
+            }
+            
+            try {
+                const decrypted = simpleDecrypt(item.encryptedContent, key);
+                document.getElementById('decryptedFacultyView').innerHTML = `
+                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                        <h4>Decrypted Content:</h4>
+                        <pre style="white-space: pre-wrap; margin-top: 10px;">${decrypted}</pre>
+                    </div>
+                `;
+                showStatus('facultyViewStatus', 'Content decrypted successfully!');
+            } catch (error) {
+                showStatus('facultyViewStatus', 'Decryption failed! Check your key.', false);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date/time for meeting minutes
+            const now = new Date();
+            const dateTimeString = now.toISOString().slice(0, 16);
+            document.getElementById('meetingDate').value = dateTimeString;
+            
+            // Initialize task display
+            displayTasks();
+        });
+    </script>
+</body>
+</html>
